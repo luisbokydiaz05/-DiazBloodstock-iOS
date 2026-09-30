@@ -1,0 +1,30 @@
+name: Unpack DiazBloodstock
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - ".github/workflows/unpack2.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  unpack:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Unpack project
+        run: |
+          unzip "Bloodstock 23.zip"
+          rm "Bloodstock 23.zip"
+
+      - name: Commit extracted project
+        run: |
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+          git add .
+          git commit -m "Unpack DiazBloodstock iOS project" || exit 0
+          git push
